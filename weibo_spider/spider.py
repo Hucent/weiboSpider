@@ -283,6 +283,11 @@ class Spider:
             from .writer import KafkaWriter
 
             self.writers.append(KafkaWriter(self.kafka_config))
+        
+        if 'openai' in self.write_mode:
+            from .writer import OpenAIWriter
+
+            self.writers.append(OpenAIWriter(self.filter))
 
         self.downloaders = []
         if self.pic_download == 1:
