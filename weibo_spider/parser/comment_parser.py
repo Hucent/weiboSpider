@@ -1,5 +1,6 @@
 import logging
 import random
+import re
 import requests
 from time import sleep
 
@@ -21,7 +22,7 @@ class CommentParser(Parser):
             for i in range(5):
                 self.selector = handle_html(self.cookie, self.url)
                 if self.selector is not None:
-                    info = self.selector.xpath("//div[@class='c']")[1]
+                    info = self.selector.xpath("//*[@id='M_']")[0]
                     wb_content = handle_garbled(info)
                     wb_time = info.xpath("//span[@class='ct']/text()")[0]
                     weibo_content = wb_content[wb_content.find(':') +
