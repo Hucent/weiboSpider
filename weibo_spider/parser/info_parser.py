@@ -1,5 +1,6 @@
 import logging
 import sys
+import imessage_tools
 
 from ..user import User
 from .parser import Parser
@@ -22,6 +23,7 @@ class InfoParser(Parser):
             nickname = nickname[:-3]
             if nickname == u'登录 - 新' or nickname == u'新浪':
                 logger.warning(u'cookie错误或已过期,请按照README中方法重新获取')
+                imessage_tools.send_message("微博cookie错误或已过期", "+8613560154705", False)
                 sys.exit()
             user.nickname = nickname
 
