@@ -346,12 +346,15 @@ class Spider:
             user_count1 = random.randint(*self.random_wait_pages)
             random_users = random.randint(*self.random_wait_pages)
             for user_config in self.user_config_list:
-                if (user_count - user_count1) % random_users == 0:
-                    sleep(random.randint(*self.random_wait_seconds))
-                    user_count1 = user_count
-                    random_users = random.randint(*self.random_wait_pages)
-                user_count += 1
-                self.get_one_user(user_config)
+                try:
+                    if (user_count - user_count1) % random_users == 0:
+                        sleep(random.randint(*self.random_wait_seconds))
+                        user_count1 = user_count
+                        random_users = random.randint(*self.random_wait_pages)
+                    user_count += 1
+                    self.get_one_user(user_config)
+                except Exception as e:
+                    logger.exception(e)
         except Exception as e:
             logger.exception(e)
 
