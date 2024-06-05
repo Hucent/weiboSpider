@@ -6,5 +6,6 @@ from .txt_writer import TxtWriter
 from .sqlite_writer import SqliteWriter
 from .kafka_writer import KafkaWriter
 from .openai_writer import OpenAIWriter
+from .post_writer import PostWriter
 
-__all__ = [CsvWriter, TxtWriter, JsonWriter, MongoWriter, MySqlWriter, SqliteWriter, KafkaWriter, OpenAIWriter]
+__all__ = [CsvWriter, TxtWriter, JsonWriter, MongoWriter, MySqlWriter, SqliteWriter, KafkaWriter, OpenAIWriter, PostWriter]
