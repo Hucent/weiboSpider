@@ -2,7 +2,9 @@ import codecs
 import logging
 import os
 import sys
+import browser_cookie3
 from datetime import datetime
+import json
 
 logger = logging.getLogger('spider.config_util')
 
@@ -172,3 +174,44 @@ def add_user_uri_list(user_config_file_path, user_uri_list):
         user_uri_list[0] = '\n' + user_uri_list[0]
     with codecs.open(user_config_file_path, 'a', encoding='utf-8') as f:
         f.write('\n'.join(user_uri_list))
+      
+def get_cookie():
+    """Get weibo.cn cookie from Chrome browser"""
+    try:
+        chrome_cookies = browser_cookie3.chrome(domain_name='weibo.cn')
+        cookies_dict = {cookie.name: cookie.value for cookie in chrome_cookies}
+        return cookies_dict
+    except Exception as e:
+        logger.error(u'Failed to obtain weibo.cn cookie from Chrome browser: %s', str(e))
+        raise 
+    
+def update_cookie_config(cookie, user_config_file_path):
+    """Update cookie in config.json"""
+    if not user_config_file_path:
+        user_config_file_path = os.getcwd() + os.sep + 'config.json' 
+    try:
+        with codecs.open(user_config_file_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            
+        cookie_string = '; '.join(f'{name}={value}' for name, value in cookie.items())
+        
+        if config['cookie'] != cookie_string:
+            config['cookie'] = cookie_string
+            with codecs.open(user_config_file_path, 'w', encoding='utf-8') as f:
+                json.dump(config, f, indent=4, ensure_ascii=False)
+    except Exception as e:
+        logger.error(u'Failed to update cookie in config file: %s', str(e))
+        raise 
+    
+def check_cookie(user_config_file_path): 
+    """Checks if user is logged in"""
+    try:
+        cookie = get_cookie()
+        if cookie.get("MLOGIN", '0') == '0':
+            logger.warning("使用 Chrome 在此登录 %s", "https://passport.weibo.com/sso/signin?entry=wapsso&source=wapssowb&url=https://m.weibo.cn/")
+            sys.exit()
+        else:
+            update_cookie_config(cookie, user_config_file_path)
+    except Exception as e:
+        logger.error(u'Check for cookie failed: %s', str(e))
+        raise 
