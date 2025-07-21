@@ -20,9 +20,9 @@ def hash_url(url):
 def handle_html(cookie, url):
     """处理html"""
     try:
-        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36'
-        headers = {'User_Agent': user_agent, 'Cookie': cookie}
-        resp = requests.get(url, headers=headers)
+        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+        headers = {'User-Agent': user_agent, 'Cookie': cookie}
+        resp = requests.get(url, headers=headers,timeout=10)
 
         if GENERATE_TEST_DATA:
             import io
