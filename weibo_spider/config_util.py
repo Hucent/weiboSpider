@@ -179,7 +179,8 @@ def add_user_uri_list(user_config_file_path, user_uri_list):
 def get_cookie():
     """Get weibo.cn cookie from Chrome browser"""
     try:
-        chrome_cookies = browser_cookie3.chrome(domain_name='weibo.cn')
+        chrome_cookies = browser_cookie3.chrome(domain_name='weibo.cn', cookie_file="/Users/hucent/.openclaw/browser/openclaw/user-data/Default/Cookies",key_file="/Users/hucent/.openclaw/browser/openclaw/user-data/Local State")
+        #chrome_cookies = browser_cookie3.chrome(domain_name='weibo.cn')
         cookies_dict = {cookie.name: cookie.value for cookie in chrome_cookies}
         return cookies_dict
     except Exception as e:
@@ -191,6 +192,7 @@ def update_cookie_config(cookie, user_config_file_path):
     if not user_config_file_path:
         user_config_file_path = os.getcwd() + os.sep + 'config.json' 
     try:
+        logger.info("====================Updating cookie in config file: %s", user_config_file_path)
         with codecs.open(user_config_file_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
             

@@ -31,6 +31,8 @@ class IndexParser(Parser):
         """获取用户信息、微博数、关注数、粉丝数"""
         try:
             user_id = self._get_user_id()
+            logger.info('开始抓取用户: %s' % user_id)
+            logger.info('cookie: %s' % self.cookie)
             self.user = InfoParser(self.cookie,
                                    user_id).extract_user_info()  # 获取用户信息
             self.user.id = user_id
